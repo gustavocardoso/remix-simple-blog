@@ -6,6 +6,7 @@ body {
   @apply font-sans text-base antialiased font-normal leading-relaxed text-gray-900;
   @apply bg-gray-100;
   @apply dark:bg-gray-900 dark:text-gray-50;
+  @apply scroll-smooth;
 }
 
 h1 {
@@ -52,7 +53,7 @@ a {
 .navbar-link-btn {
   @apply block px-4 py-2 transition-all rounded;
   @apply text-base font-semibold no-underline text-blue-50 md:hover:text-white;
-  @apply bg-blue-500 md:hover:bg-blue-700;
+  @apply bg-blue-500 dark:bg-blue-700 md:hover:bg-blue-700 dark:md:hover:bg-blue-500;
 }
 
 .wrapper {

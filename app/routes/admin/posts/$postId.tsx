@@ -1,16 +1,21 @@
 import { redirect } from '@remix-run/node'
 import { ZodError } from 'zod'
 import PostForm from '~/features/admin/components/PostForm'
-
-import type { ActionFunction } from '@remix-run/node'
-import { useActionData } from '@remix-run/react'
+import { useActionData, useLoaderData } from '@remix-run/react'
 import { extractValidationErrors, Validator } from '~/utils'
-import { savePost } from '~/features/admin/Admin.api'
+import { getPost, savePost } from '~/features/admin/Admin.api'
+
+import type { ActionFunction, LoaderFunction } from '@remix-run/node'
+import type { Post } from '@prisma/client'
 
 export interface FormFields {
   title: string
   content: string
   slug: string
+}
+
+export interface LoaderData {
+  post: Post
 }
 
 export interface ActionData {
@@ -19,7 +24,8 @@ export interface ActionData {
 }
 
 export const action: ActionFunction = async ({
-  request
+  request,
+  params
 }): Promise<ActionData | Response | void> => {
   const input = await request.formData()
   const title = input.get('title') as string
@@ -29,7 +35,7 @@ export const action: ActionFunction = async ({
   const data = { title, content, slug }
 
   try {
-    await savePost(Validator.parse(data))
+    await savePost(Validator.parse(data), params.postId)
 
     return redirect('/admin/posts')
   } catch (error) {
@@ -49,12 +55,27 @@ export const action: ActionFunction = async ({
   }
 }
 
+export const loader: LoaderFunction = async ({ params }): Promise<LoaderData | Response> => {
+  const { postId } = params
+
+  console.log(postId)
+
+  const post = await getPost(postId!)
+
+  if (!post) {
+    return redirect('.')
+  }
+
+  return { post }
+}
+
 export default function NewPost() {
-  const actiondata = useActionData<ActionData>()
+  const { post } = useLoaderData<LoaderData>()
+  // const actiondata = useActionData<ActionData>()
 
   return (
     <>
-      <PostForm formValues={actiondata?.formValues} formErrors={actiondata?.formErrors} />
+      <PostForm post={post} />
     </>
   )
 }
