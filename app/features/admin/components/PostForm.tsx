@@ -1,5 +1,6 @@
 import { Form } from '@remix-run/react'
 import { useTransition } from '@remix-run/react'
+import { useEffect, useRef } from 'react'
 import type { Post } from '../Admin.types'
 
 interface FormFields {
@@ -17,6 +18,14 @@ export default function PostForm({ formValues, formErrors, post }: PostFormProps
   const transition = useTransition()
   const loading = transition.state === 'submitting'
 
+  let titleRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (!loading) {
+      titleRef.current?.focus()
+    }
+  }, [loading])
+
   return (
     <>
       <Form method='post' className='p-8 bg-gray-200 rounded dark:bg-black'>
@@ -25,6 +34,7 @@ export default function PostForm({ formValues, formErrors, post }: PostFormProps
             Title
           </label>
           <input
+            ref={titleRef}
             className='block w-full px-4 py-2 text-lg text-gray-900 border border-blue-300 rounded appearance-none focus:shadow-lg disabled:bg-gray-200 disabled:border-gray-500 dark:bg-gray-50 accent-blue-500'
             type='text'
             id='post-title'
