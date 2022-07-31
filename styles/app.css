@@ -26,7 +26,7 @@ h3 {
 }
 
 p {
-  @apply text-base mb-4
+  @apply mb-4 text-base;
 }
 
 a {
@@ -47,7 +47,7 @@ a {
   @apply block px-4 py-2 transition-all md:p-0;
   @apply border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0;
   @apply text-base font-semibold text-gray-700 no-underline md:hover:text-blue-700 md:hover:underline;
-  @apply dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700
+  @apply dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700;
 }
 
 .navbar-link-btn {
@@ -66,4 +66,8 @@ a {
 
 .subnav-link-active {
   @apply text-red-500 !underline subnav-link;
+}
+
+.hidden {
+  @apply opacity-0;
 }
