@@ -56,7 +56,7 @@ export default function Posts({ posts }: PostsProps) {
                   <button
                     type='submit'
                     value='delete'
-                    className='flex flex-row items-center justify-center w-24 p-2 text-sm bg-gray-300 rounded hover:bg-red-500 hover:text-white'
+                    className='flex flex-row items-center justify-center w-24 p-2 text-sm text-gray-900 bg-gray-300 rounded hover:bg-red-500 hover:text-white'
                     aria-label='Delete post'
                   >
                     <svg

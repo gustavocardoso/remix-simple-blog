@@ -1,6 +1,4 @@
-import { LoaderFunction } from '@remix-run/node'
-import { Outlet, useLoaderData, useLocation, useMatches } from '@remix-run/react'
-import { useEffect, useState } from 'react'
+import { Outlet, useLocation } from '@remix-run/react'
 import CurrentPage from '~/features/admin/components/CurrentPage'
 import NavBar from '~/features/admin/components/NavBar'
 
