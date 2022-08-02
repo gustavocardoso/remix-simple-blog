@@ -1,5 +1,4 @@
-import { ActionFunction } from '@remix-run/node'
-import { Form, Link, useFetcher } from '@remix-run/react'
+import { Link, useFetcher } from '@remix-run/react'
 import type { Post } from '~/features/admin/Admin.types'
 import { date } from '~/utils'
 

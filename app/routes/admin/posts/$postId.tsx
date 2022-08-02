@@ -1,7 +1,7 @@
 import { redirect } from '@remix-run/node'
 import { ZodError } from 'zod'
 import PostForm from '~/features/admin/components/PostForm'
-import { useActionData, useLoaderData } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 import { extractValidationErrors, Validator } from '~/utils'
 import { getPost, savePost } from '~/features/admin/Admin.api'
 
