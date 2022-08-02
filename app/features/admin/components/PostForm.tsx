@@ -12,6 +12,7 @@ interface PostFormProps {
   formErrors?: FormFields
   formValues?: FormFields
   post?: Post
+  message?: string
 }
 
 export default function PostForm({ formValues, formErrors, post }: PostFormProps) {
@@ -69,12 +70,12 @@ export default function PostForm({ formValues, formErrors, post }: PostFormProps
         </div>
 
         {post && (
-          <button type='submit' form='delete-post' className='!bg-red-500 btn mr-4'>
+          <button type='submit' name='_action' value='delete' className='!bg-red-500 btn mr-4'>
             Delete
           </button>
         )}
 
-        <button type='submit' className='!bg-blue-500 btn'>
+        <button type='submit' name='_action' value='add' className='!bg-blue-500 btn'>
           {loading ? 'Saving...' : 'Save'}
         </button>
       </Form>
