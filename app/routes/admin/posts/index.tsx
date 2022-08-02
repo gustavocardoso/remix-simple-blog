@@ -12,7 +12,6 @@ interface LoaderData {
 
 export const action: ActionFunction = async ({ request }) => {
   const postId = (await (await request.formData()).get('id')) as string
-  console.log('POST ID: ', postId)
   await deletePost(postId)
 
   return redirect('/admin/posts')
