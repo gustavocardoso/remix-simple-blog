@@ -11,11 +11,11 @@ export default function NavBar() {
             fill='none'
             viewBox='0 0 24 24'
             stroke='currentColor'
-            stroke-width='2'
+            strokeWidth='2'
           >
             <path
-              stroke-linecap='round'
-              stroke-linejoin='round'
+              strokeLinecap='round'
+              strokeLinejoin='round'
               d='M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z'
             />
           </svg>
@@ -39,9 +39,9 @@ export default function NavBar() {
             xmlns='http://www.w3.org/2000/svg'
           >
             <path
-              fill-rule='evenodd'
+              fillRule='evenodd'
               d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z'
-              clip-rule='evenodd'
+              clipRule='evenodd'
             ></path>
           </svg>
           <svg
@@ -52,9 +52,9 @@ export default function NavBar() {
             xmlns='http://www.w3.org/2000/svg'
           >
             <path
-              fill-rule='evenodd'
+              fillRule='evenodd'
               d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-              clip-rule='evenodd'
+              clipRule='evenodd'
             ></path>
           </svg>
         </button>

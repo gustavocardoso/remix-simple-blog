@@ -1,13 +1,14 @@
 import { json, redirect } from '@remix-run/node'
 import { ZodError } from 'zod'
 import PostForm from '~/features/admin/components/PostForm'
-import { useActionData, useLoaderData } from '@remix-run/react'
+import { Form, useActionData, useLoaderData } from '@remix-run/react'
 import { extractValidationErrors, Validator } from '~/utils'
 import { deletePost, getPost, savePost } from '~/features/admin/Admin.api'
-import { getSession, commitSession } from '~/sessions.server'
+import { getSession, commitSession } from '~/utils/sessions.server'
+import ImageUploader from '~/features/admin/components/ImageUpload'
 
 import type { ActionFunction, LoaderFunction } from '@remix-run/node'
-import type { Post } from '@prisma/client'
+import type { Post } from '~/features/admin/Admin.types'
 
 export interface FormFields {
   title: string
@@ -103,16 +104,40 @@ export default function NewPost() {
   const { post, message } = useLoaderData<LoaderData>()
   const actiondata = useActionData<ActionData>()
 
-  console.log(message)
+  const handleFileUpload = async (file: File) => {
+    console.log('chamou')
+    const inputFormData = new FormData()
+    inputFormData.append('featured-image', file)
+
+    const response = await fetch('./featuredimage', {
+      method: 'POST',
+      body: inputFormData
+    })
+
+    const { imageUrl } = response.json()
+
+    console.log(imageUrl)
+  }
 
   return (
     <>
-      <PostForm
-        post={post}
-        formValues={actiondata?.formValues}
-        formErrors={actiondata?.formErrors}
-        message={message}
-      />
+      <div className='w-full md:grid md:grid-cols-12 gap-x-4'>
+        <div className='p-8 bg-gray-200 rounded md:col-span-9 dark:bg-black/30'>
+          <PostForm
+            post={post}
+            formValues={actiondata?.formValues}
+            formErrors={actiondata?.formErrors}
+            message={message}
+          />
+        </div>
+
+        <div className='p-8 bg-gray-200 rounded bg-black/30 md:col-span-3'>
+          <p className='font-semibold'>Featured Image</p>
+          <Form method='post' encType='multipart/form-data'>
+            <ImageUploader onChange={handleFileUpload} />
+          </Form>
+        </div>
+      </div>
     </>
   )
 }

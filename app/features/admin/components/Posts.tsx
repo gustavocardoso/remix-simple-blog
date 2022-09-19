@@ -51,7 +51,10 @@ export default function Posts({ posts }: PostsProps) {
                   </svg>{' '}
                   Edit
                 </Link>
-                <fetcher.Form method='post'>
+                <fetcher.Form
+                  method='post'
+                  onSubmit={e => (!confirm('Are you sure?') ? e.preventDefault() : true)}
+                >
                   <input type='hidden' name='id' value={post.id} />
                   <button
                     type='submit'

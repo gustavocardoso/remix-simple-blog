@@ -15,28 +15,43 @@ interface PostFormProps {
   message?: string
 }
 
-export default function PostForm({ formValues, formErrors, post }: PostFormProps) {
+export default function PostForm({ formValues, formErrors, post, message }: PostFormProps) {
   const transition = useTransition()
   const loading = transition.state === 'submitting'
-
-  let titleRef = useRef<HTMLInputElement>(null)
+  const titleRef = useRef<HTMLInputElement>(null)
+  let messageRef = useRef<HTMLParagraphElement>(null)
 
   useEffect(() => {
     if (!loading) {
       titleRef.current?.focus()
+      messageRef.current?.classList.remove('hidden')
+    }
+
+    if (loading) {
+      messageRef.current?.classList.add('hidden')
     }
   }, [loading])
 
+  useEffect(() => {
+    messageRef.current?.classList.remove('hidden')
+  }, [message])
+
   return (
     <>
-      <Form method='post' className='p-8 bg-gray-200 rounded dark:bg-black'>
+      <Form method='post'>
+        {message && (
+          <p ref={messageRef} className='text-lg font-semibold text-red-500 transition-all'>
+            {message}
+          </p>
+        )}
+
         <div className='mb-4'>
           <label className='block mb-2 text-lg font-medium' htmlFor='post-title'>
             Title
           </label>
           <input
             ref={titleRef}
-            className='block w-full px-4 py-2 text-lg text-gray-900 border border-blue-300 rounded appearance-none focus:shadow-lg disabled:bg-gray-200 disabled:border-gray-500 dark:bg-gray-50 accent-blue-500'
+            className='block w-full px-4 py-2 text-lg text-gray-900 border-2 border-blue-300 rounded appearance-none dark:border-white focus:shadow-lg disabled:bg-gray-200 disabled:border-gray-500 dark:bg-gray-50 focus:border-blue-500'
             type='text'
             id='post-title'
             name='title'
@@ -55,7 +70,7 @@ export default function PostForm({ formValues, formErrors, post }: PostFormProps
             Content
           </label>
           <textarea
-            className='block w-full px-4 py-2 text-lg text-gray-900 border border-blue-300 rounded appearance-none focus:shadow-lg disabled:bg-gray-200 disabled:border-gray-500 dark:bg-gray-50 accent-blue-500'
+            className='block w-full px-4 py-2 text-lg text-gray-900 border-2 border-blue-300 rounded appearance-none dark:border-white focus:shadow-lg disabled:bg-gray-200 disabled:border-gray-500 dark:bg-gray-50 focus:border-blue-500'
             name='content'
             id='post-body'
             cols={60}
@@ -76,6 +91,7 @@ export default function PostForm({ formValues, formErrors, post }: PostFormProps
               name='_action'
               value='delete'
               className='!bg-red-500 btn mr-4 !flex flex-row items-center justify-center'
+              onClick={e => (!confirm('Are you sure?') ? e.preventDefault() : true)}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
