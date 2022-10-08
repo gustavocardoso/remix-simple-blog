@@ -31,6 +31,8 @@ const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
       })
       .promise()
 
+    console.log(Location)
+
     return Location
   }
 )
