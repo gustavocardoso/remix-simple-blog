@@ -18,6 +18,10 @@ export async function savePost(data: FormFields, id?: string): Promise<Post> {
   return db.post.create({ data })
 }
 
+export async function saveFeaturedImage(data: Object, id: string): Promise<Post> {
+  return db.post.update({ where: { id }, data })
+}
+
 export async function getPost(id: string): Promise<Post | null> {
   return db.post.findUnique({
     where: {

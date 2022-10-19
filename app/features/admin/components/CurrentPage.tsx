@@ -5,8 +5,6 @@ interface CurrentPageProps {
 export default function CurrentPage({ url }: CurrentPageProps) {
   let currentPage
 
-  console.log(/\/admin\/posts\/.*/.test(url))
-
   switch (url) {
     case String(url.match(/^\/admin\/posts$/i)):
       currentPage = 'Posts List'
@@ -15,7 +13,6 @@ export default function CurrentPage({ url }: CurrentPageProps) {
       currentPage = 'New Post'
       break
     case String(url.match(/\/admin\/posts\/.*/i)):
-      console.log('deu certo mas ta de frescura no rabo')
       currentPage = 'Edit Post'
       break
     default:

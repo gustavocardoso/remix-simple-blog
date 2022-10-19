@@ -13,6 +13,7 @@ const s3 = new S3({
   secretAccessKey: process.env.SB_SECRET_ACCESS_KEY
 })
 
+// Use this method to upload images to a S3 bucket - AWS
 const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
   async ({ name, filename, data, contentType }) => {
     if (name !== 'featured-image') {
@@ -31,12 +32,11 @@ const uploadHandler: UploadHandler = unstable_composeUploadHandlers(
       })
       .promise()
 
-    console.log(Location)
-
     return Location
   }
 )
 
+// Use this method to upload images locally
 export const fileUploadHandler = unstable_createFileUploadHandler({
   directory: './public/uploads',
   file: ({ filename }) => filename
@@ -44,7 +44,6 @@ export const fileUploadHandler = unstable_createFileUploadHandler({
 
 export async function uploadFeaturedImage(request: Request) {
   const formData = await unstable_parseMultipartFormData(request, uploadHandler)
-
   const file = formData.get('featured-image')?.toString() || ''
 
   return file

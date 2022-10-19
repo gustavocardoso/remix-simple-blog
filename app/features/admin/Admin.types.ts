@@ -3,6 +3,7 @@ export interface Post {
   title: string
   content: string
   slug: string
+  featuredImage?: string
   createdAt: string
   updatedAt: string
 }

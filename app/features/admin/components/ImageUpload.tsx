@@ -1,4 +1,4 @@
-import React, { ReactEventHandler, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 interface ImageUploaderProps {
   onChange: (file: File) => any

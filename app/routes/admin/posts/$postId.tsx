@@ -1,10 +1,13 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import { json, redirect } from '@remix-run/node'
 import { ZodError } from 'zod'
-import PostForm from '~/features/admin/components/PostForm'
 import { Form, useActionData, useLoaderData } from '@remix-run/react'
 import { extractValidationErrors, Validator } from '~/utils'
 import { deletePost, getPost, savePost } from '~/features/admin/Admin.api'
 import { getSession, commitSession } from '~/utils/sessions.server'
+import { useState } from 'react'
+
+import PostForm from '~/features/admin/components/PostForm'
 import ImageUploader from '~/features/admin/components/ImageUpload'
 
 import type { ActionFunction, LoaderFunction } from '@remix-run/node'
@@ -100,12 +103,13 @@ export const loader: LoaderFunction = async ({
   )
 }
 
-export default function NewPost() {
+export default function EditPost() {
   const { post, message } = useLoaderData<LoaderData>()
   const actiondata = useActionData<ActionData>()
+  const [featuredImage, setFeaturedImage] = useState(null)
+  const [featuredImageMessage, setFeaturedImageMessage] = useState('')
 
   const handleFileUpload = async (file: File) => {
-    console.log('chamou')
     const inputFormData = new FormData()
     inputFormData.append('featured-image', file)
 
@@ -114,9 +118,27 @@ export default function NewPost() {
       body: inputFormData
     })
 
-    const { imageUrl } = response.json()
+    const { imageUrl } = await response.json()
 
-    console.log(imageUrl)
+    if (imageUrl) {
+      const imageFormData = new FormData()
+      imageFormData.append('postId', post.id)
+      imageFormData.append('featuredImage', imageUrl)
+
+      setFeaturedImage(imageUrl)
+
+      try {
+        const savedImage = await fetch('./savefeaturedimage', {
+          method: 'POST',
+          body: imageFormData
+        })
+
+        if (savedImage.ok) setFeaturedImageMessage('Image saved!')
+        // await saveFeaturedImage({ featuredImage: imageUrl }, post.id)
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
   return (
@@ -133,6 +155,14 @@ export default function NewPost() {
 
         <div className='p-8 bg-gray-200 rounded bg-black/30 md:col-span-3'>
           <p className='font-semibold'>Featured Image</p>
+          {featuredImageMessage && <p>{featuredImageMessage}</p>}
+
+          {featuredImage && <img src={featuredImage} alt='Post featured image' />}
+
+          {post.featuredImage && !featuredImage && (
+            <img src={post.featuredImage} alt='Post featured image' />
+          )}
+
           <Form method='post' encType='multipart/form-data'>
             <ImageUploader onChange={handleFileUpload} />
           </Form>
