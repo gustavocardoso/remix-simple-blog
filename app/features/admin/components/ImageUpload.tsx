@@ -34,9 +34,10 @@ export default function ImageUploader({ onChange, imageUrl }: ImageUploaderProps
     <>
       <div
         ref={dropRef}
-        className={`${draggingOver ? 'border-4 border-dashed border-yellow-300' : ''}`}
+        className={`${
+          draggingOver ? 'border border-dashed border-green-500' : 'border border-blue-500'
+        } aspect-video cursor-pointer group bg-cover hover:border-dashed hover:border-green-500 rounded`}
         style={{
-          backgroundSize: 'cover',
           ...(imageUrl ? { backgroundImage: `url(${imageUrl})` } : {})
         }}
         onDragEnter={() => setDraggingOver(true)}
@@ -47,15 +48,14 @@ export default function ImageUploader({ onChange, imageUrl }: ImageUploaderProps
         onDragOver={preventDefaults}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
+        title='Add/change featured image'
+        aria-label='Add/change featured image'
       >
-        {imageUrl && (
-          <div className='absolute w-full h-full transition duration-300 ease-in-out bg-blue-400 rounded-full opacity-50 group-hover:opacity-0' />
-        )}
-        {
-          <p className='z-10 text-4xl font-extrabold text-gray-200 transition duration-300 ease-in-out cursor-pointer pointer-events-none select-none group-hover:opacity-0'>
-            +
+        {!imageUrl && (
+          <p className='flex items-center justify-center w-full h-full font-semibold text-gray-500 transition-colors bg-gray-900 hover:bg-gray-800 hover:text-gray-300'>
+            Click here or drop an image
           </p>
-        }
+        )}
         <input
           type='file'
           name='featured-image'

@@ -22,6 +22,11 @@ export async function saveFeaturedImage(data: Object, id: string): Promise<Post>
   return db.post.update({ where: { id }, data })
 }
 
+export async function deleteFeaturedImage(id: string): Promise<Post> {
+  const data = { featuredImage: null }
+  return db.post.update({ where: { id }, data })
+}
+
 export async function getPost(id: string): Promise<Post | null> {
   return db.post.findUnique({
     where: {

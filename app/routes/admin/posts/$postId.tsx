@@ -5,7 +5,7 @@ import { Form, useActionData, useLoaderData } from '@remix-run/react'
 import { extractValidationErrors, Validator } from '~/utils'
 import { deletePost, getPost, savePost } from '~/features/admin/Admin.api'
 import { getSession, commitSession } from '~/utils/sessions.server'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import PostForm from '~/features/admin/components/PostForm'
 import ImageUploader from '~/features/admin/components/ImageUpload'
@@ -106,12 +106,29 @@ export const loader: LoaderFunction = async ({
 export default function EditPost() {
   const { post, message } = useLoaderData<LoaderData>()
   const actiondata = useActionData<ActionData>()
-  const [featuredImage, setFeaturedImage] = useState(null)
+  const [featuredImage, setFeaturedImage] = useState('')
   const [featuredImageMessage, setFeaturedImageMessage] = useState('')
+
+  useEffect(() => {
+    if (post.featuredImage) setFeaturedImage(post.featuredImage)
+  }, [post.featuredImage])
 
   const handleFileUpload = async (file: File) => {
     const inputFormData = new FormData()
     inputFormData.append('featured-image', file)
+
+    // If there is an image  already saved, delete it
+    if (post.featuredImage || featuredImage) {
+      console.log('will remove')
+      const deleteFormData = new FormData()
+      deleteFormData.append('key', post.featuredImage || featuredImage)
+      deleteFormData.append('postId', post.id)
+
+      await fetch('./deletefeaturedimage', {
+        method: 'POST',
+        body: deleteFormData
+      })
+    }
 
     const response = await fetch('./featuredimage', {
       method: 'POST',
@@ -153,19 +170,16 @@ export default function EditPost() {
           />
         </div>
 
-        <div className='p-8 bg-gray-200 rounded bg-black/30 md:col-span-3'>
+        <div className='p-8 bg-gray-200 rounded dark:bg-black/30 md:col-span-3'>
           <p className='font-semibold'>Featured Image</p>
-          {featuredImageMessage && <p>{featuredImageMessage}</p>}
-
-          {featuredImage && <img src={featuredImage} alt='Post featured image' />}
-
-          {post.featuredImage && !featuredImage && (
-            <img src={post.featuredImage} alt='Post featured image' />
-          )}
 
           <Form method='post' encType='multipart/form-data'>
-            <ImageUploader onChange={handleFileUpload} />
+            <ImageUploader onChange={handleFileUpload} imageUrl={featuredImage} />
           </Form>
+
+          {featuredImageMessage && (
+            <p className='mt-2 font-medium text-green-500'>{featuredImageMessage}</p>
+          )}
         </div>
       </div>
     </>
